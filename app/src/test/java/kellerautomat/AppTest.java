@@ -4,30 +4,33 @@
 package kellerautomat;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.EmptyStackException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
     @Test
     void testInvalidOperation1() {
-        var kellerautomat = new Kellerautomat();
-        assertThrows(IllegalArgumentException.class, () -> kellerautomat.calculate("3 4 + *"));
+        var kellerautomat = new KellerAutomat();
+        assertThrows(EmptyStackException.class, () -> kellerautomat.calculate("3 4 + *"));
     }
 
     @Test
     void testInvalidOperation2() {
-        var kellerautomat = new Kellerautomat();
-        assertThrows(IllegalArgumentException.class, () -> kellerautomat.calculate("8 + 9 + 7 * 2 *"));
+        var kellerautomat = new KellerAutomat();
+        assertThrows(EmptyStackException.class, () -> kellerautomat.calculate("8 + 9 + 7 * 2 *"));
     }
 
     @Test
     void testValidOperation1() {
-        var kellerautomat = new Kellerautomat();
+        var kellerautomat = new KellerAutomat();
         assertEquals(6664,kellerautomat.calculate("3 4 + 6 2 + 8 9 + 4 3 + * * *"));
     }
 
     @Test
     void testValidOperation2() {
-        var kellerautomat = new Kellerautomat();
-        assertEquals(58,kellerautomat.calculate("3 4 + 6 2 + 8 9 + 4 3 + * * *"));
+        var kellerautomat = new KellerAutomat();
+        assertEquals(58,kellerautomat.calculate("3 1 + 7 8 + 9 8 7 + 1 2 1 4 + + 7 + + + + + +"));
     }
 }
