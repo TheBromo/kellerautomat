@@ -30,8 +30,8 @@ public class Stepmodus implements Modes {
     }
 
     private void printInstructionProgress(List<Symbol> tokens, int i) {
-        for (Symbol symbol : tokens){
-            System.out.print(symbol +" ");
+        for (Symbol symbol : tokens) {
+            System.out.print(symbol + " ");
         }
         System.out.println();
         for (int j = 0; j < i; j++) {
@@ -41,11 +41,11 @@ public class Stepmodus implements Modes {
     }
 
 
-    private void printStack(List<Symbol> stackCopy) {
+    private void printStack(int[] stackCopy) {
         System.out.print("Stack:\n > ");
 
-        for (int i = stackCopy.size() - 1; i >= 0; i--) {
-            System.out.print(stackCopy.get(i).toString() + "|");
+        for (int i = 0; i < stackCopy.length; i++) {
+            System.out.print(stackCopy[i] + "|");
         }
         System.out.print("\n");
     }

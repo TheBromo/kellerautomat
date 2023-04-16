@@ -2,27 +2,27 @@ package kellerautomat;
 
 
 import java.util.EmptyStackException;
-import java.util.List;
-import java.util.Stack;
 
 public class KellerAutomat {
 
-    Stack<Symbol> stack = new Stack<>(); //TODO create own stack
-    public List<Symbol> doStep(Symbol current) throws RuntimeException, EmptyStackException {
-            if (current.isNumber()) {
-                stack.push(current);
-            }
-            if (current.isOperator()) {
-                var right = stack.pop();
-                var left = stack.pop();
-                int t = ((Operator) current).calculate(((Number)left).getValue(),((Number)right).getValue());
-                stack.push(new Number(t));
-            }
-            return stack.stream().toList();
+    Keller stack = new Keller();
+
+    public int[] doStep(Symbol current) throws EmptyStackException {
+        if (current.isNumber()) {
+            int value = ((Number) current).getValue();
+            stack.push(value);
+        }
+        if (current.isOperator()) {
+            var right = stack.pop();
+            var left = stack.pop();
+            int t = ((Operator) current).calculate(left, right);
+            stack.push(t);
+        }
+        return stack.getData();
     }
 
-    int getResult(){
-        return ((Number)stack.pop()).getValue();
+    int getResult() {
+        return stack.pop();
     }
 
 }

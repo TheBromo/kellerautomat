@@ -1,8 +1,5 @@
 package kellerautomat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Operator extends Symbol {
 
     boolean multiplyOperator;
