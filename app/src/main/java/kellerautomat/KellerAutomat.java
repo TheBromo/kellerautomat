@@ -1,31 +1,27 @@
 package kellerautomat;
 
 
-import java.util.Arrays;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
 public class KellerAutomat {
-    public int calculate(String input) throws RuntimeException, EmptyStackException {
 
-        if (input.isEmpty()) {
-            throw new IllegalArgumentException("string is empty");
-        }
-        List<Symbol> tokens = Arrays.stream(input.split("\\s")).map(Symbol::parseSymbol).toList();
-        var stack = new Stack<Symbol>(); //TODO create own stack
-
-        for (Symbol a : tokens) {
-            if (a.isNumber()) {
-                stack.push(a);
+    Stack<Symbol> stack = new Stack<>(); //TODO create own stack
+    public List<Symbol> doStep(Symbol current) throws RuntimeException, EmptyStackException {
+            if (current.isNumber()) {
+                stack.push(current);
             }
-            if (a.isOperator()) {
+            if (current.isOperator()) {
                 var right = stack.pop();
                 var left = stack.pop();
-                int t = ((Operator) a).calculate(((Number)left).getValue(),((Number)right).getValue());
+                int t = ((Operator) current).calculate(((Number)left).getValue(),((Number)right).getValue());
                 stack.push(new Number(t));
             }
-        }
+            return stack.stream().toList();
+    }
+
+    int getResult(){
         return ((Number)stack.pop()).getValue();
     }
 

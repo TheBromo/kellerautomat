@@ -12,25 +12,25 @@ import static org.junit.jupiter.api.Assertions.*;
 class AppTest {
     @Test
     void testInvalidOperation1() {
-        var kellerautomat = new KellerAutomat();
-        assertThrows(EmptyStackException.class, () -> kellerautomat.calculate("3 4 + *"));
+        var kellerautomat = new App();
+        assertThrows(EmptyStackException.class, () -> kellerautomat.run("3 4 + *",false));
     }
 
     @Test
     void testInvalidOperation2() {
-        var kellerautomat = new KellerAutomat();
-        assertThrows(EmptyStackException.class, () -> kellerautomat.calculate("8 + 9 + 7 * 2 *"));
+        var kellerautomat = new App();
+        assertThrows(EmptyStackException.class, () -> kellerautomat.run("8 + 9 + 7 * 2 *",false));
     }
 
     @Test
     void testValidOperation1() {
-        var kellerautomat = new KellerAutomat();
-        assertEquals(6664,kellerautomat.calculate("3 4 + 6 2 + 8 9 + 4 3 + * * *"));
+        var kellerautomat = new App();
+        assertEquals(6664,kellerautomat.run("3 4 + 6 2 + 8 9 + 4 3 + * * *",false));
     }
 
     @Test
     void testValidOperation2() {
-        var kellerautomat = new KellerAutomat();
-        assertEquals(58,kellerautomat.calculate("3 1 + 7 8 + 9 8 7 + 1 2 1 4 + + 7 + + + + + +"));
+        var kellerautomat = new App();
+        assertEquals(58,kellerautomat.run("3 1 + 7 8 + 9 8 7 + 1 2 1 4 + + 7 + + + + + +",false));
     }
 }
