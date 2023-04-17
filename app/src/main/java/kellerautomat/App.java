@@ -4,10 +4,6 @@
 package kellerautomat;
 
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -15,31 +11,63 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter UPN:");
-        var input = scanner.nextLine();
-        System.out.println("Stepmodus?");
-        var modus = scanner.nextBoolean();
 
-        int result = new App().run(input, modus);
+
+        int result = 0;
+        boolean finished = false;
+        while (!finished) {
+            try{
+                System.out.println("Enter UPN:");
+                var input = scanner.nextLine();
+                System.out.println("Stepmodus?");
+                var modus = scanner.nextBoolean();
+                result = new App().run(input, modus);
+                finished = true;
+            }catch (Exception e){
+                System.err.println(e.getMessage());
+            }
+        }
+
         System.out.println("==================================");
         System.out.println("        RESULT: " + result);
         System.out.println("==================================");
     }
 
-    public int run(String input, boolean stepmodus) {
+    public int run(String input, boolean stepModus) {
         if (input.isEmpty()) {
             throw new IllegalArgumentException("string is empty");
         }
 
-        List<Symbol> tokens = Arrays.stream(input.split("\\s")).map(Symbol::parseSymbol).toList();
+        char[] tokens = convertToCharArray(input.split("\\s"));
+        validateTokens(tokens);
 
         Modes modus;
-        if (stepmodus) {
+        if (stepModus) {
             modus = new Stepmodus(tokens);
         } else {
             modus = new Laufmodus(tokens);
         }
 
         return modus.doCalculation();
+    }
+
+    private void validateTokens(char[] tokens) {
+        for (var token : tokens){
+            if (!Character.isDigit(token) && token != KellerAutomat.addition && token != KellerAutomat.multiply) {
+                throw new IllegalArgumentException("Invalid operator");
+            }
+        }
+    }
+
+    char[] convertToCharArray(String[] stringArray) {
+        var charArray = new char[stringArray.length];
+        for (int i = 0; i < stringArray.length; i++) {
+            if (stringArray[i].length() == 1 ) {
+                charArray[i] = stringArray[i].charAt(0);
+            } else {
+                throw new IllegalArgumentException("token longer than 1 symbol. Length: " + stringArray[i]);
+            }
+        }
+        return charArray;
     }
 }

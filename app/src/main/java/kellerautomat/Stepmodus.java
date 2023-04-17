@@ -1,12 +1,10 @@
 package kellerautomat;
 
-import java.util.List;
-
 public class Stepmodus implements Modes {
 
-    final List<Symbol> tokens;
+    final char[] tokens;
 
-    public Stepmodus(List<Symbol> tokens) {
+    public Stepmodus(char[] tokens) {
         this.tokens = tokens;
     }
 
@@ -15,10 +13,10 @@ public class Stepmodus implements Modes {
 
         var kellerautomat = new KellerAutomat();
         try {
-            for (Symbol token : tokens) {
+            for (int i = 0; i < tokens.length; i++) {
                 System.out.println("===================================================");
-                printInstructionProgress(tokens, tokens.indexOf(token));
-                printStack(kellerautomat.doStep(token));
+                printInstructionProgress(tokens, i);
+                printStack(kellerautomat.doStep(tokens[i]));
                 System.out.println("===================================================");
                 Thread.sleep(1000);
             }
@@ -29,15 +27,20 @@ public class Stepmodus implements Modes {
         return kellerautomat.getResult();
     }
 
-    private void printInstructionProgress(List<Symbol> tokens, int i) {
-        for (Symbol symbol : tokens) {
-            System.out.print(symbol + " ");
+    private void printInstructionProgress(char[] tokens, int i) {
+        for (int j = 0; j < tokens.length ; j++) {
+            if (j == i){
+                System.out.print(ANSI_RED_BACKGROUND + ANSI_WHITE_FOREGROUND + tokens[j] + ANSI_RESET);
+
+            }else{
+                System.out.print(tokens[j] + " ");
+            }
         }
         System.out.println();
         for (int j = 0; j < i; j++) {
             System.out.print("  ");
         }
-        System.out.println("^");
+        System.out.println(ANSI_RED_BACKGROUND + ANSI_WHITE_FOREGROUND + "^" + ANSI_RESET);
     }
 
 
