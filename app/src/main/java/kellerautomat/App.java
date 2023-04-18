@@ -33,7 +33,7 @@ public class App {
         System.out.println("==================================");
     }
 
-    public int run(String input, boolean stepModus) {
+    public int run(String input, boolean stepModus){
         if (input.isEmpty()) {
             throw new IllegalArgumentException("string is empty");
         }

@@ -1,7 +1,5 @@
 package kellerautomat;
 
-import java.util.List;
-
 public class Laufmodus implements Modes {
 
     final char[] tokens;

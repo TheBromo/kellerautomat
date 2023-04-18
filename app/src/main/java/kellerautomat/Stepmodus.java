@@ -12,44 +12,54 @@ public class Stepmodus implements Modes {
     public int doCalculation() {
 
         var kellerautomat = new KellerAutomat();
-        try {
-            for (int i = 0; i < tokens.length; i++) {
-                System.out.println("===================================================");
-                printInstructionProgress(tokens, i);
-                printStack(kellerautomat.doStep(tokens[i]));
-                System.out.println("===================================================");
+
+        for (int i = 0; i < tokens.length; i++) {
+            printSeparator();
+            printStack(kellerautomat.doStep(tokens[i]));
+            printInstructionProgress(tokens, i);
+            System.out.println();
+            try {
                 Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        } catch (InterruptedException e) {
-            System.err.println("incorrect format: " + e);
         }
+
 
         return kellerautomat.getResult();
     }
 
-    private void printInstructionProgress(char[] tokens, int i) {
-        for (int j = 0; j < tokens.length ; j++) {
-            if (j == i){
-                System.out.print(ANSI_RED_BACKGROUND + ANSI_WHITE_FOREGROUND + tokens[j] + ANSI_RESET);
+    private void printSeparator() {
+        Log.standard("\n\n\n\n");
+    }
 
-            }else{
-                System.out.print(tokens[j] + " ");
+    private void printInstructionProgress(char[] tokens, int i) {
+        for (int j = 0; j < tokens.length; j++) {
+            if (j == i) {
+                Log.red(String.valueOf(tokens[j]));
+                Log.white(" ");
+            } else {
+                Log.white(tokens[j] + " ");
             }
         }
-        System.out.println();
-        for (int j = 0; j < i; j++) {
-            System.out.print("  ");
+        Log.standard("\n");
+        for (int j = 0; j < tokens.length; j++) {
+            if (j == i) {
+                Log.red("^" );
+                Log.white(" ");
+            } else {
+                Log.white("  ");
+            }
         }
-        System.out.println(ANSI_RED_BACKGROUND + ANSI_WHITE_FOREGROUND + "^" + ANSI_RESET);
     }
 
 
     private void printStack(int[] stackCopy) {
-        System.out.print("Stack:\n > ");
+        Log.standard("-> ");
 
-        for (int i = 0; i < stackCopy.length; i++) {
-            System.out.print(stackCopy[i] + "|");
+        for (int j : stackCopy) {
+            Log.yellow(j + "|");
         }
-        System.out.print("\n");
+        Log.standard("\n");
     }
 }
