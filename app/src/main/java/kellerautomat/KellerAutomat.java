@@ -2,27 +2,39 @@ package kellerautomat;
 
 
 import java.util.EmptyStackException;
-import java.util.List;
-import java.util.Stack;
 
 public class KellerAutomat {
+    static final char multiply = '*';
+    static final char addition = '+';
 
-    Stack<Symbol> stack = new Stack<>(); //TODO create own stack
-    public List<Symbol> doStep(Symbol current) throws RuntimeException, EmptyStackException {
-            if (current.isNumber()) {
-                stack.push(current);
-            }
-            if (current.isOperator()) {
-                var right = stack.pop();
-                var left = stack.pop();
-                int t = ((Operator) current).calculate(((Number)left).getValue(),((Number)right).getValue());
-                stack.push(new Number(t));
-            }
-            return stack.stream().toList();
+    String ANSI_RESET = "\u001B[0m";
+    Keller stack = new Keller();
+
+    public int[] doStep(char current) throws EmptyStackException {
+        if (Character.isDigit(current)) {
+            int value = Character.getNumericValue(current);
+            stack.push(value);
+        } else if (current == multiply || current == addition) {
+            int right = stack.pop();
+            int left = stack.pop();
+            int t = calculate(current, left, right);
+            stack.push(t);
+        }
+        return stack.getData();
     }
 
-    int getResult(){
-        return ((Number)stack.pop()).getValue();
+    private int calculate(char operator, int left, int right) {
+        if (operator == multiply) {
+
+            return left * right;
+        } else {
+            Log.green(left + "+" + right);
+            return left + right;
+        }
+    }
+
+    int getResult() {
+        return stack.pop();
     }
 
 }

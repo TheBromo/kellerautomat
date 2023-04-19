@@ -6,31 +6,48 @@ package kellerautomat;
 import org.junit.jupiter.api.Test;
 
 import java.util.EmptyStackException;
+import java.util.Stack;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AppTest {
     @Test
     void testInvalidOperation1() {
         var kellerautomat = new App();
-        assertThrows(EmptyStackException.class, () -> kellerautomat.run("3 4 + *",false));
+        assertThrows(EmptyStackException.class, () -> kellerautomat.run("3 4 + *", false));
     }
 
     @Test
     void testInvalidOperation2() {
         var kellerautomat = new App();
-        assertThrows(EmptyStackException.class, () -> kellerautomat.run("8 + 9 + 7 * 2 *",false));
+        assertThrows(EmptyStackException.class, () -> kellerautomat.run("8 + 9 + 7 * 2 *", false));
     }
 
     @Test
     void testValidOperation1() {
         var kellerautomat = new App();
-        assertEquals(6664,kellerautomat.run("3 4 + 6 2 + 8 9 + 4 3 + * * *",false));
+        assertEquals(6664, kellerautomat.run("3 4 + 6 2 + 8 9 + 4 3 + * * *", false));
     }
 
     @Test
     void testValidOperation2() {
         var kellerautomat = new App();
-        assertEquals(58,kellerautomat.run("3 1 + 7 8 + 9 8 7 + 1 2 1 4 + + 7 + + + + + +",false));
+        assertEquals(58, kellerautomat.run("3 1 + 7 8 + 9 8 7 + 1 2 1 4 + + 7 + + + + + +", false));
+    }
+
+
+    @Test
+    void stackTest1() {
+        var a = new int[]{1, 2, 3, 4, 5, 6, 7, 8};
+        var stack = new Stack<Integer>();
+        var keller = new Keller();
+        for (var e : a) {
+            stack.push(e);
+            keller.push(e);
+        }
+        for (var e : a) {
+            assertEquals(stack.pop().intValue(), keller.pop());
+        }
     }
 }

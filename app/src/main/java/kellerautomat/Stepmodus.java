@@ -1,12 +1,10 @@
 package kellerautomat;
 
-import java.util.List;
-
 public class Stepmodus implements Modes {
 
-    final List<Symbol> tokens;
+    final char[] tokens;
 
-    public Stepmodus(List<Symbol> tokens) {
+    public Stepmodus(char[] tokens) {
         this.tokens = tokens;
     }
 
@@ -14,39 +12,54 @@ public class Stepmodus implements Modes {
     public int doCalculation() {
 
         var kellerautomat = new KellerAutomat();
-        try {
-            for (Symbol token : tokens) {
-                System.out.println("===================================================");
-                printInstructionProgress(tokens, tokens.indexOf(token));
-                printStack(kellerautomat.doStep(token));
-                System.out.println("===================================================");
+
+        for (int i = 0; i < tokens.length; i++) {
+            printSeparator();
+            printStack(kellerautomat.doStep(tokens[i]));
+            printInstructionProgress(tokens, i);
+            System.out.println();
+            try {
                 Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        } catch (InterruptedException e) {
-            System.err.println("incorrect format: " + e);
         }
+
 
         return kellerautomat.getResult();
     }
 
-    private void printInstructionProgress(List<Symbol> tokens, int i) {
-        for (Symbol symbol : tokens){
-            System.out.print(symbol +" ");
+    private void printSeparator() {
+        Log.standard("\n\n\n\n");
+    }
+
+    private void printInstructionProgress(char[] tokens, int i) {
+        for (int j = 0; j < tokens.length; j++) {
+            if (j == i) {
+                Log.red(String.valueOf(tokens[j]));
+                Log.white(" ");
+            } else {
+                Log.white(tokens[j] + " ");
+            }
         }
-        System.out.println();
-        for (int j = 0; j < i; j++) {
-            System.out.print("  ");
+        Log.standard("\n");
+        for (int j = 0; j < tokens.length; j++) {
+            if (j == i) {
+                Log.red("^" );
+                Log.white(" ");
+            } else {
+                Log.white("  ");
+            }
         }
-        System.out.println("^");
     }
 
 
-    private void printStack(List<Symbol> stackCopy) {
-        System.out.print("Stack:\n > ");
+    private void printStack(int[] stackCopy) {
+        Log.standard("-> ");
 
-        for (int i = stackCopy.size() - 1; i >= 0; i--) {
-            System.out.print(stackCopy.get(i).toString() + "|");
+        for (int j : stackCopy) {
+            Log.yellow(j + "|");
         }
-        System.out.print("\n");
+        Log.standard("\n");
     }
 }
